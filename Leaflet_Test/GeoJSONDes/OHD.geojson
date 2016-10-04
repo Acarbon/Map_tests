@@ -1,0 +1,123 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 1,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19451414.299608171,
+          -4426523.2561143385
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 2,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19450448.347249318,
+          -4425884.8917550044
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 3,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19450102.213155195,
+          -4425639.6611742228
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 4,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449772.26439321,
+          -4425429.1321146386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 5,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449426.469510857,
+          -4420952.827885041
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 6,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19448197.226220649,
+          -4421298.7183847064
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 7,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447349.782232556,
+          -4421189.6668543965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 8,
+        "LAYER": "OHD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19445653.73166804,
+          -4421245.2503526621
+        ]
+      }
+    }
+  ]
+}

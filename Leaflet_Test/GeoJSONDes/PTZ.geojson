@@ -1,0 +1,151 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "PTZS001",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19450361.232567489,
+          -4420860.3842512285
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS002",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449017.959776558,
+          -4421068.9309552927
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS003",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19448372.628498193,
+          -4421247.8412324106
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS004",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19448068.339777846,
+          -4421268.49424466
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS005",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447947.148244929,
+          -4421676.4157087505
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS006",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447321.924329843,
+          -4421230.6694432935
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS007",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449738.565635294,
+          -4425416.2431798261
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS008",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19450152.975411475,
+          -4425683.3632337349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS009",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19451373.165610787,
+          -4426483.0002465956
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "PTZS010",
+      "properties": {
+        "LAYER": "PTZ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19452022.6125368,
+          -4426704.3903425811
+        ]
+      }
+    }
+  ]
+}

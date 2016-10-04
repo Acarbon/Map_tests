@@ -1,0 +1,116 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "METS001",
+      "properties": {
+        "AdMapKey": 1,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447883.468027696,
+          -4421646.5370504213
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "METS002",
+      "properties": {
+        "AdMapKey": 2,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447961.557136972,
+          -4421656.2911127135
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "METS003",
+      "properties": {
+        "AdMapKey": 3,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449151.772546586,
+          -4425174.86009383
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "METS004",
+      "properties": {
+        "AdMapKey": 4,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449168.731356665,
+          -4425123.1286255652
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "METS005",
+      "properties": {
+        "AdMapKey": 5,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19450224.300343551,
+          -4425753.2834390746
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "METS006",
+      "properties": {
+        "AdMapKey": 6,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19450258.623674035,
+          -4425707.2512323335
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "METS007",
+      "properties": {
+        "AdMapKey": 7,
+        "LAYER": "MET"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447939.245984066,
+          -4421643.750160343
+        ]
+      }
+    }
+  ]
+}
