@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "BAS001",
+      "properties": {
+        "AdMapKey": 1,
+        "LAYER": "BA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19447911.184336912,
+          -4421784.0634626308
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "BAS002",
+      "properties": {
+        "AdMapKey": 2,
+        "LAYER": "BA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19448807.967285048,
+          -4424991.4055729154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "BAS003",
+      "properties": {
+        "AdMapKey": 3,
+        "LAYER": "BA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19449806.42622016,
+          -4425460.4491992937
+        ]
+      }
+    }
+  ]
+}

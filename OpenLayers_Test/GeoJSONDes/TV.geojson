@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "AdMapKey": 1,
+        "LAYER": "TV"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19448704.806295533,
+          -4424940.5954316119
+        ]
+      }
+    }
+  ]
+}
