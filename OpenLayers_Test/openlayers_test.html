@@ -1,0 +1,836 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Prueba</title>
+  <link rel="stylesheet" href="v3.18.2/css/ol.css" type="text/css">
+  <script src="v3.18.2/build/ol.js"></script>
+  <link rel="stylesheet" href="ol3-layerswitcher-master/src/ol3-layerswitcher.css" />
+  <script src="ol3-layerswitcher-master/src/ol3-layerswitcher.js"></script>
+  <script type="text/javascript" src="v3.18.2/proj4.js"></script>
+</head>
+<body>
+  <div id="map" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+  <div style="position: absolute; right: 0; width: 100px; height: 32px; z-index: 2000">
+	<input type="button" id="AnimateButton" onclick="toggleAnimate()" value="Animate"/>
+  </div>
+  <script type="text/javascript">
+
+  //Basic parameters
+  ///////////////////////////////
+  const testDevicesCount = 1000;
+
+  // Globals
+  ///////////////////////////////
+  var ImageCache = {};
+  var tiempo = (new Date).getTime();
+
+  //Device Canvas initialization
+  var deviceCanvasCache = {};
+
+  ///////////////////////////////
+
+  var stylesBA = {
+    'Point': new ol.style.Style({
+      image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+        //color: '#58FAF4',
+        src: 'ImagesMap/BA_ABAJO.png',
+        scale: 0.25
+      }))
+    })
+  };
+
+  var stylesCA = {
+    'LineString': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(83, 97, 117, 0.7)',
+        lineDash: [4],
+        width: 1.5
+      })
+    })
+  };
+
+  var stylesMA = {
+    'Polygon': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(200,230,255,0.5)',
+        width: 3
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(200,230,255,0.5)'
+      })
+    })
+  };
+
+  //      var stylesME = {
+  //        'Point': new ol.style.Style({
+  //          image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+  //            //color: '#58FAF4',
+  //            src: 'ImagesMap/MET_ACTIVE.png',
+  //            scale: 0.5
+  //          }))
+  //        })
+  //      };
+
+  var stylesOH = {
+    'Point': new ol.style.Style({
+      image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+        //color: '#58FAF4',
+        src: 'ImagesMap/OHD_ON.png',
+        scale: 0.5
+      }))
+    })
+  };
+
+  var stylesPO = {
+    'Polygon': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(232,230,205, 0.7)',
+        width: 3
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(232,230,205, 0.7)'
+      })
+    })
+  };
+
+  //      var stylesPT = {
+  //        'Point': new ol.style.Style({
+  //         image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+  //           //color: '#58FAF4',
+  //           src: 'ImagesMap/PTZ.png',
+  //           scale: 0.5
+  //          }))
+  //        })
+  //      };
+
+  var stylesRO = {
+    'LineString': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(232,230,205, 0.7)',
+        width: 1.5
+      })
+    })
+  };
+
+  var stylesTI = {
+    'Polygon': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(249,248,247, 0.5)',
+        width: 3
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(249,248,247, 0.5)'
+      })
+    })
+  };
+
+  var stylesTR = {
+    'LineString': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(0, 76, 205, 0.5)',
+        width: 1
+      })
+    })
+  };
+
+  var stylesTV = {
+    'Point': new ol.style.Style({
+      //   image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+      //     //color: '#58FAF4',
+      //     src: 'ImagesMap/TV_.png',
+      //     scale: 0.5
+      //   }))
+      text: new ol.style.Text({
+        textAlign: 'center',
+        textBaseline: 'middle',
+        font: '24px Arial',
+        text: 'PRUEBA DE TEXTO',
+        fill: new ol.style.Fill({color: 'yellow'}),
+        stroke: new ol.style.Stroke({color: 'yellow', width: 0.5}),
+      })
+    })
+  };
+
+  var stylesVE = {
+    'Polygon': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(186,223,192, 0.7)',
+        lineDash: [0],
+        width: 3
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(186,223,192,0.7)'
+      })
+    })
+  };
+
+  var stylesVM = {
+    'Point': new ol.style.Style({
+      image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+        //color: '#58FAF4',
+        src: 'ImagesMap/VMS.png',
+        scale: 1
+      }))
+    })
+  };
+
+
+  // Test de equipos.....
+
+  var DevicesState = {
+    // MET
+    "METS001" : {
+      "ECOM" : true,
+      "STATE" : "ecom"
+    },
+    "METS002" : {
+      "ECOM" : false,
+      "STATE": "calling"
+    },
+    "METS003" : {
+      "ECOM" : false,
+      "STATE": "active"
+    },
+    "METS004" : {
+      "ECOM" : false,
+      "STATE": "ready"
+    },
+    "METS005" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "ALARM": true
+    },
+    "METS006" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "ALARM": true,
+      "MAINTENANCE": true
+    },
+
+    //PTZ
+    "PTZS001" : {
+      "ECOM" : true,
+      "STATE" : "ecom"
+    },
+    "PTZS002" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "MAINTENANCE": true
+    },
+    "PTZS003" : {
+      "ECOM" : false,
+      "STATE": "ready"
+    },
+    "PTZS004" : {
+      "ECOM" : false,
+      "STATE": "ready"
+    },
+    "PTZS005" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "ALARM": true
+    },
+    "PTZS006" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "ALARM": true,
+      "MAINTENANCE": true
+    },
+    "PTZS007" : {
+      "ECOM" : true,
+      "STATE" : "ecom"
+    },
+    "PTZS008" : {
+      "ECOM" : false,
+      "STATE": "ready"
+    },
+    "PTZS009" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "ALARM": true,
+      "MAINTENANCE": true
+    },
+    "PTZS010" : {
+      "ECOM" : false,
+      "STATE": "ready",
+      "ALARM": true
+    }
+  };
+
+
+
+  // Cambiar el valor del estado de los equipos cada 5 segundos
+
+  function setDeviceValue (devId, variable, value)
+  {
+    var device = DevicesState[devId];
+
+    if (device === undefined)
+    return null;
+    else
+    {
+      device[variable] = value;
+
+      if (value !== undefined)
+      return device[variable];
+      else
+      return null;
+    }
+  }
+
+  function changeDeviceState ()
+  {
+    var tiempoReal = (new Date).getTime();
+    var tiempoPasado = tiempoReal-tiempo;
+    if((tiempoReal-tiempo)>=20){
+      for (var property in DevicesState) {
+
+        if(getDeviceValue(property, "STATE") === "ready")
+        setDeviceValue(property, "STATE", "ecom")
+        else setDeviceValue(property, "STATE", "ready")
+
+        if(getDeviceValue(property, "MAINTENANCE") === true)
+        setDeviceValue(property, "MAINTENANCE", false)
+        else setDeviceValue(property, "MAINTENANCE", true)
+      }
+      tiempo = tiempoReal;
+      vectorLayerME.getSource().changed();
+      vectorLayerPT.getSource().changed();
+    }
+  }
+
+  //////////////////////////////////////////////////////////////
+
+  function getDeviceValue (devId, variable)
+  {
+    var device = DevicesState[devId];
+
+    if (device === undefined)
+    return null;
+    else
+    {
+      var value = device[variable];
+
+      if (value !== undefined)
+      return value;
+      else
+      return null;
+    }
+  }
+
+  function getDeviceState (device)
+  {
+    return getDeviceValue(device, 'STATE');
+  }
+
+  function getIconImage (imgName)
+  {
+    var imgUrl = 'ImagesMap/' + imgName + '.png';
+
+    if (imgUrl in ImageCache)
+    return ImageCache[imgUrl];
+    else
+    {
+      var imageObj = new Image();
+      imageObj.onload = function() {
+        ImageCache[imgUrl] = imageObj;
+      };
+
+      imageObj.src = imgUrl;
+
+      return imageObj;
+    }
+  }
+
+  //Composes a device image
+  function composeDeviceImage(deviceId, iconList)
+  {
+    var deviceCanvas;
+
+    if (deviceId in deviceCanvasCache)
+      deviceCanvas = deviceCanvasCache[deviceId];
+    else {
+      deviceCanvas = document.createElement('canvas');
+      deviceCanvas.width = 128;
+      deviceCanvas.height = 128;
+      deviceCanvasCache[deviceId] = deviceCanvas;
+    }
+
+    const context = deviceCanvas.getContext('2d');
+
+    context.clearRect(0,0, 128, 128);
+    if (iconList.length > 0)
+    {
+      for (i=0; i < iconList.length; ++i)
+      {
+        image = getIconImage(iconList[i])
+
+        if (image.complete)
+        context.drawImage(image, 0, 0, 128, 128);
+      }
+    }
+
+    return deviceCanvas;
+  }
+
+  function styleFunctionME(feature) {
+
+    var id = feature.getId();
+    var icons = [];
+
+    if (id === undefined)
+    icons.push('AL');
+    else
+    {
+
+      var state = getDeviceState(id);
+      var icon = 'MET_UNKNOWN';
+
+      switch (state)
+      {
+        case 'ready':
+        icon = 'MET';
+        break;
+        case 'active':
+        icon = 'MET_ACTIVE';
+        break;
+        case 'calling':
+        icon = 'MET_CALLING';
+        break;
+      }
+
+      icons.push (icon);
+
+      if (getDeviceValue(id, 'ALARM') === true)
+      icons.push('AL_128x128');
+
+      if (getDeviceValue(id, 'MAINTENANCE') === true)
+      icons.push('AIM_128x128');
+    }
+
+    var deviceImage = composeDeviceImage(id, icons);
+
+    var style = new ol.style.Style({
+      image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+        //color: '#58FAF4',
+        img: deviceImage,
+        scale: 0.5,
+        imgSize: [128, 128]
+      }))
+    })
+    return style;
+  };
+
+  function styleFunctionPT(feature) {
+
+    var id = feature.getId();
+    var icons = [];
+
+    if (id === undefined)
+    icons.push('AL');
+    else
+    {
+      var state = getDeviceState(id);
+      var icon = 'PTZ_UNKNOWN';
+
+      if (state === 'ready')
+      {
+        icon = 'PTZ';
+      }
+
+      icons.push (icon);
+
+      if (getDeviceValue(id, 'ALARM') === true)
+      icons.push('AL_128x128');
+
+      if (getDeviceValue(id, 'MAINTENANCE') === true)
+      icons.push('AIM_128x128');
+    }
+
+    var deviceImage = composeDeviceImage(id, icons);
+
+    var style = new ol.style.Style({
+      image: new ol.style.Icon(/*Verde:#00FF00 Rojo:#FE2E2E*/ ({
+        //color: '#58FAF4',
+        img: deviceImage,
+        scale: 0.5,
+        imgSize: [128, 128]
+      }))
+    })
+
+
+    return style;
+  };
+  ////////////////////////////////////////////
+
+  var styleFunctionBA = function(feature) {
+    return stylesBA[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionCA = function(feature) {
+    return stylesCA[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionMA = function(feature) {
+    return stylesMA[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionOH = function(feature) {
+    return stylesOH[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionPO = function(feature) {
+    return stylesPO[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionRO = function(feature) {
+    return stylesRO[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionTI = function(feature) {
+    return stylesTI[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionTR = function(feature) {
+    return stylesTR[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionTV = function(feature) {
+    return stylesTV[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionVE = function(feature) {
+    return stylesVE[feature.getGeometry().getType()];
+  };
+
+  var styleFunctionVM = function(feature) {
+    return stylesVM[feature.getGeometry().getType()];
+  };
+
+
+  var vectorLayerBA = new ol.layer.Vector({
+    title: 'BA',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/BA.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionBA,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerVE = new ol.layer.Vector({
+    title: 'Verde',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/VERDE.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionVE,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerCA = new ol.layer.Vector({
+    title: 'Carriles',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/CARRILES.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionCA,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerMA = new ol.layer.Vector({
+    title: 'Mar',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/MAR.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionMA,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerME = new ol.layer.Vector({
+    title: 'MET',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/MET.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionME,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerOH = new ol.layer.Vector({
+    title: 'OHD',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/OHD.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionOH,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerPO = new ol.layer.Vector({
+    title: 'Población',
+    source: new ol.source.Vector({
+      url: 'GeoJSONDes/POBLACION.geojson',
+      format: new ol.format.GeoJSON()
+    }),
+    style: styleFunctionPO,
+    updateWhileAnimating: true,
+    updateWhiteInteracting: true,
+    renderBuffer: 5000
+  });
+
+  var vectorLayerPT = new ol.layer.Vector({
+    title: 'PTZ'
+    ,source: new ol.source.Vector()
+    ,style: styleFunctionPT
+    ,updateWhileAnimating: true
+    ,updateWhiteInteracting: true
+    ,renderBuffer: 5000
+  });
+
+  /*            var vectorLayerPT = new ol.layer.Vector({
+  title: 'PTZ',
+  source: new ol.source.Vector({
+  url: 'GeoJSONDes/PTZ.geojson',
+  format: new ol.format.GeoJSON()
+}),
+style: styleFunctionPT,
+updateWhileAnimating: true,
+updateWhiteInteracting: true,
+renderBuffer: 5000
+});
+*/
+var vectorLayerRO = new ol.layer.Vector({
+  title: 'Roads',
+  source: new ol.source.Vector({
+    url: 'GeoJSONDes/ROADS.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  style: styleFunctionTR,
+  updateWhileAnimating: true,
+  updateWhiteInteracting: true,
+  renderBuffer: 5000
+});
+
+var vectorLayerTI = new ol.layer.Vector({
+  title: 'Tierra',
+  source: new ol.source.Vector({
+    url: 'GeoJSONDes/TIERRA.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  style: styleFunctionTI,
+  updateWhileAnimating: true,
+  updateWhiteInteracting: true,
+  renderBuffer: 5000
+});
+
+var vectorLayerTR = new ol.layer.Vector({
+  title: 'Roads',
+  source: new ol.source.Vector({
+    url: 'GeoJSONDes/TRAZADO.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  style: styleFunctionTR,
+  updateWhileAnimating: true,
+  updateWhiteInteracting: true,
+  renderBuffer: 5000
+});
+
+var vectorLayerTV = new ol.layer.Vector({
+  title: 'TV',
+  source: new ol.source.Vector({
+    url: 'GeoJSONDes/TV.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  style: styleFunctionTV,
+  updateWhileAnimating: true,
+  updateWhiteInteracting: true,
+  renderBuffer: 5000
+});
+
+var vectorLayerVM = new ol.layer.Vector({
+  title: 'VMS',
+  source: new ol.source.Vector({
+    url: 'GeoJSONDes/VMS.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  style: styleFunctionVM,
+  updateWhileAnimating: true,
+  updateWhiteInteracting: true,
+  renderBuffer: 5000
+});
+
+var basemap = new ol.layer.Tile({
+  source: new ol.source.OSM(),
+  title: 'Capa base OSM',
+  type: 'base'
+});
+
+var view = new ol.View({
+  // the view's initial state
+  center: [19448704.806295533, -4424940.5954316119],
+  zoom: 15
+});
+
+
+var map = new ol.Map({
+  layers: [new ol.layer.Group({
+    'title': 'Base maps',
+    layers: [basemap]}),
+    new ol.layer.Group({
+      title: 'Capas superpuestas',
+      layers: [ new ol.layer.Group({
+        title: 'Superficies',
+        layers: [vectorLayerTI, vectorLayerMA, vectorLayerVE, vectorLayerPO]}),
+        new ol.layer.Group({
+          title: 'Líneas y carreteras',
+          layers: [vectorLayerTR, vectorLayerCA]}),
+          new ol.layer.Group({
+            title: 'Equipos',
+            layers: [vectorLayerME, vectorLayerOH, vectorLayerPT, vectorLayerBA, vectorLayerVM, vectorLayerTV]})
+          ]
+        })
+      ],
+      renderer: 'canvas',
+      target: 'map',
+      view: view
+    });
+
+
+
+    var layerSwitcher = new ol.control.LayerSwitcher({
+      tipLabel: 'Leyenda'
+    });
+
+    map.addControl(layerSwitcher);
+
+    layerSwitcher.showPanel();
+
+
+    map.getView().on('change:resolution', function (e) {
+      if (map.getView().getZoom() > 15) {
+        vectorLayerME.setVisible(true);
+        vectorLayerOH.setVisible(true);
+      }
+      if (map.getView().getZoom() < 15) {
+        vectorLayerME.setVisible(false);
+        vectorLayerOH.setVisible(false);
+      }
+
+      if (map.getView().getZoom() > 14) {
+        vectorLayerVM.setVisible(true);
+        vectorLayerTV.setVisible(true);
+      }
+      if (map.getView().getZoom() < 14) {
+        vectorLayerVM.setVisible(false);
+        vectorLayerTV.setVisible(false);
+      }
+
+      if (map.getView().getZoom() > 13) {
+        vectorLayerPT.setVisible(true);
+        vectorLayerBA.setVisible(true);
+      }
+      if (map.getView().getZoom() < 13) {
+        vectorLayerPT.setVisible(true);
+        vectorLayerBA.setVisible(false);
+      }
+
+      if (map.getView().getZoom() > 12) {
+        vectorLayerTR.setVisible(true);
+        vectorLayerCA.setVisible(true);
+        vectorLayerTI.setVisible(true);
+        vectorLayerMA.setVisible(true);
+        vectorLayerVE.setVisible(true);
+        vectorLayerPO.setVisible(true);
+      }
+      if (map.getView().getZoom() < 12) {
+        vectorLayerTR.setVisible(false);
+        vectorLayerCA.setVisible(false);
+        vectorLayerTI.setVisible(false);
+        vectorLayerMA.setVisible(false);
+        vectorLayerVE.setVisible(false);
+        vectorLayerPO.setVisible(false);
+      }
+    });
+
+    generateTestDevices();
+
+    //Generates devices for performance testing
+    function generateTestDevices()
+    {
+      const xBounds = [19440000.0, 19457000.0];
+      const yBounds = [-4428000.0, -4420000.0];
+
+      for (var i = 0; i < testDevicesCount; ++i)
+      {
+        const x = xBounds[0] + Math.random() * (xBounds[1] - xBounds[0]);
+        const y = yBounds[0] + Math.random() * (yBounds[1] - yBounds[0]);
+
+        generateTestDevice (x,y, "PTZS" + zeroPaddedNumber(i, 4));
+      }
+    }
+
+    //Generates a test device at the given coordinates
+    function generateTestDevice (x,y, name)
+    {
+      const position = new ol.geom.Point([x, y]);
+      const feature = new ol.Feature({geometry: position});
+
+      feature.setId (name);
+      DevicesState[name] = {
+        "ECOM" : Math.random() > (1/20)
+        ,"STATE": "ready"
+        ,"ALARM": Math.random() > (1/10)
+        ,"MAINTENANCE": Math.random() > (1/20)
+      }
+
+      vectorLayerPT.getSource().addFeature(feature);
+    }
+
+    //Generates a number having at least the specified number of digits. The number is padded with zeroes,
+    //if required
+    function zeroPaddedNumber (number, minDigits)
+    {
+      const numberStr = number.toString();
+
+      if (numberStr.length < minDigits)
+      return "0".repeat(minDigits - numberStr.length) + numberStr;
+      else
+      return numberStr;
+    }
+
+	var animateTimer = null;
+
+	function toggleAnimate ()
+	{
+		if (animateTimer===null)
+		{
+			animateTimer = setInterval(changeDeviceState, 10);
+			document.getElementById ("AnimateButton").value = "Stop";
+		}
+		else
+		{
+			clearInterval(animateTimer);
+			animateTimer = null;
+			document.getElementById ("AnimateButton").value = "Animate";
+		}
+	}
+
+    </script>
+  </body>
+  </html>
